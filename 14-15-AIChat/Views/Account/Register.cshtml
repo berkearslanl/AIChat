@@ -1,0 +1,67 @@
+﻿@model RegisterViewModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="w-full max-w-md bg-surface-container-lowest/80 backdrop-blur-xl border border-white/50 rounded-3xl shadow-lg p-8">
+    <!-- Logo ve başlık -->
+    <div class="flex flex-col items-center text-center mb-8">
+        <div class="w-12 h-12 rounded-2xl bg-primary-container flex items-center justify-center shadow-sm border border-white/40 mb-4">
+            <span class="material-symbols-outlined filled text-on-primary-container">robot_2</span>
+        </div>
+        <h1 class="font-headline-md text-headline-md text-on-surface">Hesap oluştur</h1>
+        <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Aiva Chat'e katıl</p>
+    </div>
+
+    <form method="post" asp-controller="Account" asp-action="Register" class="flex flex-col gap-5">
+        @if (ViewData.ModelState[string.Empty]?.Errors.Count > 0)
+        {
+            <div class="rounded-xl bg-error-container/60 text-on-error-container px-4 py-3 font-label-sm text-label-sm">
+                @foreach (var error in ViewData.ModelState[string.Empty]!.Errors)
+                {
+                    <p>@error.ErrorMessage</p>
+                }
+            </div>
+        }
+
+        <div>
+            <label asp-for="FullName" class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Ad Soyad</label>
+            <input asp-for="FullName" autocomplete="name" placeholder="Adın Soyadın"
+                   class="w-full rounded-xl bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 text-on-surface placeholder-on-surface-variant/40 focus:border-primary focus:ring-primary/30" />
+            <span asp-validation-for="FullName" class="block mt-1 font-label-sm text-label-sm text-error empty:hidden"></span>
+        </div>
+
+        <div>
+            <label asp-for="Email" class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">E-posta</label>
+            <input asp-for="Email" type="email" autocomplete="email" placeholder="ornek@mail.com"
+                   class="w-full rounded-xl bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 text-on-surface placeholder-on-surface-variant/40 focus:border-primary focus:ring-primary/30" />
+            <span asp-validation-for="Email" class="block mt-1 font-label-sm text-label-sm text-error empty:hidden"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password" class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Şifre</label>
+            <input asp-for="Password" autocomplete="new-password" placeholder="••••••••"
+                   class="w-full rounded-xl bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 text-on-surface placeholder-on-surface-variant/40 focus:border-primary focus:ring-primary/30" />
+            <p class="mt-1 font-label-sm text-label-sm text-on-surface-variant/60">En az 6 karakter, bir rakam ve bir küçük harf içermeli.</p>
+            <span asp-validation-for="Password" class="block mt-1 font-label-sm text-label-sm text-error empty:hidden"></span>
+        </div>
+
+        <div>
+            <label asp-for="ConfirmPassword" class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Şifre (tekrar)</label>
+            <input asp-for="ConfirmPassword" autocomplete="new-password" placeholder="••••••••"
+                   class="w-full rounded-xl bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 text-on-surface placeholder-on-surface-variant/40 focus:border-primary focus:ring-primary/30" />
+            <span asp-validation-for="ConfirmPassword" class="block mt-1 font-label-sm text-label-sm text-error empty:hidden"></span>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-3 px-4 rounded-full font-label-sm text-label-sm font-semibold shadow-md hover:shadow-lg transition-all duration-300 active:scale-95">
+            Kayıt Ol
+        </button>
+    </form>
+
+    <p class="text-center font-label-sm text-label-sm text-on-surface-variant mt-6">
+        Zaten hesabın var mı?
+        <a asp-controller="Account" asp-action="Login" class="text-primary font-semibold hover:underline">Giriş yap</a>
+    </p>
+</div>

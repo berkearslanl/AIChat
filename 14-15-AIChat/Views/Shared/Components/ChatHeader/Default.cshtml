@@ -1,0 +1,21 @@
+@model ChatHeaderViewModel
+<!-- TopAppBar (Shared Component) -->
+<header class="w-full bg-surface/30 backdrop-blur-md border-b border-white/10 shadow-sm dark:shadow-none sticky top-0 z-50">
+    <div class="flex justify-between items-center w-full px-gutter h-16 max-w-container-max mx-auto">
+        <!-- Sol: (mobilde logo) + aktif model -->
+        <div class="flex items-center gap-3">
+            <span class="md:hidden font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">Aiva Chat</span>
+            <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-container/30 border border-outline-variant/30">
+                <span class="material-symbols-outlined text-primary" style="font-size: 16px;">smart_toy</span>
+                <span class="font-label-sm text-label-sm text-on-surface">@Model.ModelName</span>
+            </div>
+        </div>
+        <!-- Trailing Actions -->
+        <div class="flex items-center gap-4 ml-auto">
+            <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/30 shadow-sm">
+                <div class="w-2 h-2 rounded-full bg-outline animate-pulse" data-status-dot></div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant" data-status-text>Bağlanıyor...</span>
+            </div>
+        </div>
+    </div>
+</header>

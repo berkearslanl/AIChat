@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Aiva Chat</title>
+
+    @* Tailwind CSS (CDN) + Stitch'in tema ayarlari. Sira onemli: once CDN, sonra config. *@
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="~/js/tailwind.config.js" asp-append-version="true"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@@400;500;600;700&amp;family=JetBrains+Mono:wght@@400&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/chat.css" asp-append-version="true" />
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md h-screen w-full flex overflow-hidden antialiased selection:bg-primary-container/50">
+    @RenderBody()
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

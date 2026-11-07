@@ -1,0 +1,23 @@
+<!-- Floating Input Area -->
+<div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-background via-background/90 to-transparent pointer-events-none">
+    <div class="max-w-[800px] mx-auto w-full pointer-events-auto relative">
+        <!-- Input Box -->
+        <div class="bg-surface-container-lowest/90 backdrop-blur-xl border border-outline-variant/30 rounded-[24px] shadow-sm flex items-end p-2 relative overflow-hidden transition-shadow focus-within:shadow-md focus-within:border-primary/50">
+            <button class="p-2.5 text-on-surface-variant hover:text-primary transition-colors flex-shrink-0 rounded-full hover:bg-surface-variant/50">
+                <span class="material-symbols-outlined">attach_file</span>
+            </button>
+            <textarea class="flex-1 max-h-32 bg-transparent border-none focus:ring-0 resize-none px-2 py-3 font-body-md text-body-md text-on-surface placeholder-on-surface-variant/50 min-h-[48px]" placeholder="Mesaj gönder..." rows="1" style="scrollbar-width: none;" id="messageInput"></textarea>
+            <div class="flex items-center gap-1 p-1">
+                <button type="button" id="micButton" class="p-2 text-on-surface-variant hover:text-error transition-colors flex-shrink-0 rounded-full hover:bg-error-container/50">
+                    <span class="material-symbols-outlined">mic</span>
+                </button>
+                <button class="p-2 bg-primary text-on-primary rounded-full hover:bg-primary/90 transition-all shadow-sm transform hover:scale-105 active:scale-95 flex-shrink-0" id="sendButton">
+                    <span class="material-symbols-outlined" style="font-size: 20px; transform: rotate(-45deg) translate(2px, -2px);">send</span>
+                </button>
+            </div>
+        </div>
+        <div class="text-center mt-2">
+            <span class="font-label-sm text-[11px] text-on-surface-variant/60">Yapay zeka hata yapabilir. Önemli bilgileri kontrol edin.</span>
+        </div>
+    </div>
+</div>

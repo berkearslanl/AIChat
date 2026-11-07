@@ -1,0 +1,20 @@
+@model int?
+@{
+    ViewData["Title"] = "Sohbet";
+    Layout = "_ChatLayout";
+}
+
+@await Component.InvokeAsync("Sidebar", new { selectedId = Model })
+<main class="flex-1 flex flex-col min-w-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-surface-bright via-background to-surface-container-low relative" data-conversation-id="@Model">
+    @await Component.InvokeAsync("ChatHeader")
+    @await Component.InvokeAsync("MessageList", new { conversationId = Model })
+    @await Component.InvokeAsync("MessageComposer")
+</main>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@@10/dist/browser/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@15/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    <script src="~/js/chat.js" asp-append-version="true"></script>
+    <script src="~/js/sidebar.js" asp-append-version="true"></script>
+}

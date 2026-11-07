@@ -1,0 +1,47 @@
+@model List<Message>
+<div class="flex-1 overflow-y-auto px-4 py-8 md:px-8">
+    <div class="max-w-[800px] mx-auto w-full flex flex-col gap-stack-md pb-24" id="messageContainer">
+        @if (Model.Count == 0)
+        {
+            <div id="emptyState" class="flex flex-col items-center justify-center text-center gap-3 min-h-[60vh]">
+                <div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center shadow-sm">
+                    <span class="material-symbols-outlined filled text-on-primary-container" style="font-size: 32px;">auto_awesome</span>
+                </div>
+                <h2 class="font-headline-md text-headline-md text-primary">Yeni bir sohbete başlayın</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant max-w-sm">İlk mesajınızı aşağıya yazın.</p>
+            </div>
+        }
+        @foreach (var item in Model)
+        {
+            if (item.MessageRole == MessageRole.User)
+            {
+                <partial name="_UserMessage" model="item" />
+            }
+            else
+            {
+                <partial name="_AiMessage" model="item" />
+            }
+        }
+
+        <div class="flex justify-start items-center gap-3 w-full opacity-50 hidden" id="typingIndicator" >
+            <div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center flex-shrink-0 border border-white/40">
+                <span class="material-symbols-outlined text-on-surface-variant" style="font-size: 16px;">robot_2</span>
+            </div>
+            <div class="font-label-sm text-label-sm text-on-surface-variant animate-pulse flex items-center gap-2">
+                Yapay zeka düşünüyor
+                <div class="flex gap-1">
+                    <div class="w-1.5 h-1.5 bg-on-surface-variant rounded-full animate-[bounce_1s_infinite_0ms]"></div>
+                    <div class="w-1.5 h-1.5 bg-on-surface-variant rounded-full animate-[bounce_1s_infinite_200ms]"></div>
+                    <div class="w-1.5 h-1.5 bg-on-surface-variant rounded-full animate-[bounce_1s_infinite_400ms]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template id="userMessageTemplate">
+    <partial name="_UserMessage" model="new Message()" />
+</template>
+<template id="aiMessageTemplate">
+    <partial name="_AiMessage" model="new Message()" />
+</template>

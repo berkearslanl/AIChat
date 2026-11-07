@@ -1,0 +1,127 @@
+@model SidebarViewModel
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex flex-col h-screen w-80 flex-shrink-0 bg-surface/50 backdrop-blur-xl dark:bg-on-background/10 bg-surface-container-low dark:bg-on-background shadow-sm border-r border-white/10 py-6 px-4">
+    <!-- Header -->
+    <div class="flex items-center gap-3 mb-8 px-2">
+        <div class="w-10 h-10 rounded-xl overflow-hidden bg-primary-container flex items-center justify-center flex-shrink-0 shadow-sm border border-white/20">
+            <img alt="Aiva Logo" class="w-full h-full object-cover" data-alt="A minimalist and elegant 3D logo design for an AI named 'Aiva'. The logo features soft, curving shapes in gradient lavender and pastel purple tones, rendered with a glossy, glass-like texture reflecting soft studio light. The background is completely transparent or plain white, emphasizing the high-end, premium aesthetic of the brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWGomFrXWa3Xb2oBkQmRpU0dL6JmJrm8CnfOz8XalSh8BZGgKpmWP4MgVNBvEsutQO0v1F6jozOFCml2ij5RkEnf0dwfPZhiTG8mbxi2F6mK_JSP5TAVO60aPi9oXfeua_raC7ViTnmCPMduYAwx69n0QHSnkCVYJOJjbiKt_GQrmJ2FEwJM5AOSD675n0YAzwKWSyU2vr-RGdMM8iSWNjWQSbq8AzNVv4c-eBSZsZVsJBrFqfwVOr" />
+        </div>
+        <div class="flex flex-col">
+            <span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Aiva Chat</span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Premium AI Deneyimi</span>
+        </div>
+    </div>
+    <!-- CTA -->
+    <a href="/Home/Index" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-container text-on-primary py-3 px-4 rounded-full font-label-sm text-label-sm font-semibold shadow-md hover:shadow-lg transition-all duration-300 mb-8 active:scale-95">
+        <span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+        Yeni Sohbet
+    </a>
+    <!-- Sohbet listesi (veritabanından) -->
+    <div class="flex-1 min-h-0 flex flex-col gap-1 overflow-y-auto" id="conversationList">
+        @if (Model.Groups.Count == 0)
+        {
+            <p class="px-3 py-2.5 font-label-sm text-label-sm text-on-surface-variant/60">Henüz sohbet yok</p>
+        }
+        @foreach (var group in Model.Groups)
+        {
+            <p class="px-3 pt-4 pb-1 font-label-sm text-label-sm text-on-surface-variant/50 uppercase tracking-wide">@group.Title</p>
+            @foreach (var item in group.Items )
+            {
+                var isActive = item.ConversationId == Model.SelectedConversationId;
+
+                <div class="group relative">
+                    <a class="flex items-center gap-3 pl-3 pr-10 py-2.5 rounded-lg transition-colors duration-200 @(isActive ? "bg-primary-container/30 text-on-surface" : "text-on-surface-variant/70 hover:text-on-surface hover:bg-primary-container/20")"
+                       asp-controller="Home" asp-action="Index" asp-route-id="@item.ConversationId" title="@item.Title">
+                        <span class="material-symbols-outlined flex-shrink-0">chat_bubble</span>
+                        <span class="font-label-sm text-label-sm truncate min-w-0">@item.Title</span>
+                    </a>
+                    <button type="button" data-menu-button data-id="@item.ConversationId" data-title="@item.Title" aria-label="Sohbet seçenekleri"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full text-on-surface-variant opacity-0 group-hover:opacity-100 focus:opacity-100 hover:bg-primary-container/40 transition-opacity duration-150">
+                        <span class="material-symbols-outlined" style="font-size: 20px;">more_horiz</span>
+                    </button>
+                </div>
+            }
+        }
+    </div>
+    <div class="mt-4 pt-4 border-t border-surface-variant/50 flex flex-col gap-1 flex-shrink-0">
+        <div class="flex items-center gap-2 px-3 py-2.5 rounded-lg">
+            <span class="material-symbols-outlined filled text-primary flex-shrink-0">account_circle</span>
+            <span class="flex-1 min-w-0 truncate font-label-sm text-label-sm font-medium text-on-surface" title="@Model.FullName">@Model.FullName</span>
+            <form method="post" asp-controller="Account" asp-action="Logout">
+                <button type="submit" title="Çıkış yap"
+                        class="p-1.5 rounded-md text-on-surface-variant hover:text-error hover:bg-error-container/40 transition-colors">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">logout</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- Sohbet seçenekleri menüsü: tüm satırlar için tek menü, sidebar.js konumlandırır.
+     (nav'ın dışında, çünkü backdrop-blur içindeki fixed elemanların konumunu bozar) -->
+<div id="conversationMenu" class="hidden fixed z-50 w-52 py-1.5 rounded-xl bg-surface-container-lowest border border-outline-variant/40 shadow-lg">
+    <button type="button" id="renameAction" class="w-full flex items-center gap-3 px-4 py-2.5 text-on-surface hover:bg-primary-container/20 transition-colors duration-200">
+        <span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+        <span class="font-label-sm text-label-sm">Yeniden adlandır</span>
+    </button>
+    <button type="button" id="deleteAction" class="w-full flex items-center gap-3 px-4 py-2.5 text-error hover:bg-error-container/40 transition-colors duration-200">
+        <span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
+        <span class="font-label-sm text-label-sm">Sil</span>
+    </button>
+</div>
+
+<!-- Yeniden adlandır penceresi: sidebar.js açar. Form doğrudan POST eder (antiforgery token tag helper'dan gelir). -->
+<dialog id="renameDialog" class="conv-dialog p-0 w-[calc(100%-2rem)] max-w-sm rounded-2xl bg-surface-container-lowest text-on-surface border border-outline-variant/40 shadow-xl">
+    <form method="post" asp-controller="Home" asp-action="RenameConversation" class="p-6 flex flex-col gap-5">
+        <input type="hidden" name="id" />
+        <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-full bg-primary-container/40 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+            </span>
+            <div class="min-w-0">
+                <h2 class="text-[18px] leading-6 font-semibold">Sohbeti yeniden adlandır</h2>
+                <p class="font-label-sm text-label-sm text-on-surface-variant">Listede görünecek yeni başlığı yaz.</p>
+            </div>
+        </div>
+        <input type="text" name="title" required maxlength="100" autocomplete="off" aria-label="Sohbet başlığı"
+               class="w-full rounded-xl border-outline-variant/60 bg-surface-container-lowest px-4 py-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-primary" />
+        <div class="flex justify-end gap-2">
+            <button type="button" data-dialog-close
+                    class="px-4 py-2.5 rounded-full font-label-sm text-label-sm font-semibold text-on-surface-variant hover:bg-primary-container/20 transition-colors duration-200">
+                İptal
+            </button>
+            <button type="submit"
+                    class="px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-label-sm text-label-sm font-semibold shadow-md hover:shadow-lg transition-all duration-300 active:scale-95">
+                Kaydet
+            </button>
+        </div>
+    </form>
+</dialog>
+
+<!-- Silme onay penceresi -->
+<dialog id="deleteDialog" class="conv-dialog p-0 w-[calc(100%-2rem)] max-w-sm rounded-2xl bg-surface-container-lowest text-on-surface border border-outline-variant/40 shadow-xl">
+    <form method="post" asp-controller="Home" asp-action="DeleteConversation" class="p-6 flex flex-col gap-5">
+        <input type="hidden" name="id" />
+        <div class="flex items-start gap-3">
+            <span class="w-10 h-10 rounded-full bg-error-container text-error flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+            </span>
+            <div class="min-w-0">
+                <h2 class="text-[18px] leading-6 font-semibold">Sohbet silinsin mi?</h2>
+                <p class="mt-1 font-label-sm text-label-sm text-on-surface-variant break-words">
+                    <span id="deleteTitle" class="font-semibold text-on-surface"></span> ve içindeki tüm mesajlar kalıcı olarak silinecek. Bu işlem geri alınamaz.
+                </p>
+            </div>
+        </div>
+        <div class="flex justify-end gap-2">
+            <button type="button" data-dialog-close
+                    class="px-4 py-2.5 rounded-full font-label-sm text-label-sm font-semibold text-on-surface-variant hover:bg-primary-container/20 transition-colors duration-200">
+                Vazgeç
+            </button>
+            <button type="submit"
+                    class="px-5 py-2.5 rounded-full bg-error text-on-error font-label-sm text-label-sm font-semibold shadow-md hover:shadow-lg hover:brightness-110 transition-all duration-300 active:scale-95">
+                Sil
+            </button>
+        </div>
+    </form>
+</dialog>

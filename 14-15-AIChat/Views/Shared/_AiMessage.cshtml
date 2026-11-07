@@ -1,0 +1,34 @@
+﻿@model Message
+
+<div class="flex justify-start items-start gap-3 w-full group" data-ai-message>
+    <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 mt-1 border border-white/40 shadow-sm" data-avatar>
+        <span class="material-symbols-outlined filled text-on-primary-container" style="font-size: 16px;">robot_2</span>
+    </div>
+    <div class="max-w-[90%] md:max-w-[85%] bg-surface-container-lowest/80 backdrop-blur-md text-on-surface p-5 rounded-2xl rounded-bl-sm shadow-sm border border-white/50 relative overflow-hidden">
+        <!-- Glass edge highlight -->
+        <div class="absolute inset-0 border-t border-l border-white/40 rounded-2xl pointer-events-none"></div>
+        <div class="font-body-md text-body-md text-on-surface-variant markdown-body" data-content data-markdown>@Model.Content</div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" data-actions>
+            <button class="p-1.5 rounded-md hover:bg-surface-variant text-on-surface-variant transition-colors" title="Kopyala">
+                <span class="material-symbols-outlined" style="font-size: 18px;">content_copy</span>
+            </button>
+            <button type="button" data-speak-button class="p-1.5 rounded-md hover:bg-surface-variant text-on-surface-variant transition-colors" title="Sesli dinle">
+                <span class="material-symbols-outlined" style="font-size: 18px;">volume_up</span>
+            </button>
+            <span class="speaking-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <button class="p-1.5 rounded-md hover:bg-surface-variant text-on-surface-variant transition-colors" title="İyi Yanıt">
+                <span class="material-symbols-outlined" style="font-size: 18px;">thumb_up</span>
+            </button>
+            <button class="p-1.5 rounded-md hover:bg-surface-variant text-on-surface-variant transition-colors" title="Kötü Yanıt">
+                <span class="material-symbols-outlined" style="font-size: 18px;">thumb_down</span>
+            </button>
+            <button class="p-1.5 rounded-md hover:bg-surface-variant text-on-surface-variant transition-colors ml-auto flex items-center gap-1" title="Yeniden Oluştur">
+                <span class="material-symbols-outlined" style="font-size: 16px;">refresh</span>
+                <span class="font-label-sm text-[11px]">Yeniden</span>
+            </button>
+        </div>
+    </div>
+</div>
+<br /><br />
